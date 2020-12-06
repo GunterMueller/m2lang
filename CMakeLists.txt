@@ -4,13 +4,13 @@ if(POLICY CMP0075)
   cmake_policy(SET CMP0075 NEW)
 endif()
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 # If we are not building as a part of LLVM, build M2lang as an
 # standalone project, using LLVM as an external library:
 if( CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR )
   project(M2lang)
+  set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ standard to conform to")
+  set(CMAKE_CXX_STANDARD_REQUIRED YES)
+  set(CMAKE_CXX_EXTENSIONS NO)
 
   # Rely on llvm-config.
   set(CONFIG_OUTPUT)
@@ -171,13 +171,17 @@ Please install Python or specify the PYTHON_EXECUTABLE CMake variable.")
         add_subdirectory(${UNITTEST_DIR} utils/unittest)
       endif()
     else()
-      # Seek installed Lit.
-      find_program(LLVM_LIT
-                   NAMES llvm-lit lit.py lit
-                   PATHS "${LLVM_MAIN_SRC_DIR}/utils/lit"
-                   DOC "Path to lit.py")
-      # Add our own versions
-      add_subdirectory(utils/m2lang-lit)
+      if(LLVM_EXTERNAL_LIT)
+        set(LLVM_LIT ${LLVM_EXTERNAL_LIT})
+      else()
+        # Seek installed Lit.
+        find_program(LLVM_LIT
+                     NAMES llvm-lit lit.py lit
+                     PATHS "${LLVM_MAIN_SRC_DIR}/utils/lit"
+                     DOC "Path to lit.py")
+        # Add our own version
+        add_subdirectory(utils/m2lang-lit)
+      endif()
       if(NOT LLVM_UTILS_PROVIDED)
         add_subdirectory(utils/FileCheck-${LLVM_VERSION_MAJOR}.${LLVM_VERSION_MINOR})
         add_subdirectory(utils/count)
