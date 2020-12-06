@@ -14,6 +14,7 @@ task:
         cmake --version
         ninja --version
         $PYTHON --version
+        echo $PATH
     compile_script: |
         cd $CIRRUS_WORKING_DIR/..
         mkdir build
