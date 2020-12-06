@@ -23,6 +23,8 @@ task:
               -DLLVM_EXTERNAL_LIT=$LLVM_ROOT_DIR/bin/llvm-lit \
               -DPYTHON_EXECUTABLE=$PYTHON \
               $CIRRUS_WORKING_DIR
+        grep -i "llvm-lit" build.ninja CMakeCache.txt
+        ls $LLVM_ROOT_DIR/bin
         ninja LLtool
         ninja m2lang
         bin/m2lang --version
