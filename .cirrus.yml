@@ -20,6 +20,7 @@ task:
         cd build
         cmake -G Ninja \
               -DLLVM_CMAKE_PATH=$($LLVM_ROOT_DIR/bin/llvm-config --cmakedir) \
+              -DLLVM_LIT=$LLVM_ROOT_DIR/bin/llvm-lit
               -DPYTHON_EXECUTABLE=$PYTHON \
               $CIRRUS_WORKING_DIR
         ninja LLtool
