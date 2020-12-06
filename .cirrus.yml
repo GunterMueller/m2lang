@@ -3,12 +3,12 @@ task:
     freebsd_instance:
         image_family: freebsd-12-2
     environment:
-        LLVM_ROOT_DIR: /usr/local/llvm90
+        LLVM_ROOT_DIR: /usr/local/llvm10
         CC: $LLVM_ROOT_DIR/bin/clang
         PYTHON: /usr/local/bin/python3.7
     install_tools_script: |
         cd $CIRRUS_WORKING_DIR/..
-        pkg install -y git cmake ninja python37 llvm
+        pkg install -y git cmake ninja python37 llvm10
     checkenv_script: |
         sysctl -n hw.ncpu
         cmake --version
